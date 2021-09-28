@@ -56,10 +56,10 @@ mapping(address => bool) public isOwner;
         approvals[msg.sender][_id] = true; 
         emit setApprovals(msg.sender, _id);
     }
+   //Need to update the Transfer object
+    //Need to update the mapping to record the approval for the msg.sender.
+    //When the amount of approvals for a transfer has reached the limit, this function should send the transfer to the recipient.
+    //An owner should not be able to vote twice.
+    //An owner should not be able to vote on a tranfer request that has already been sent.
 
 }
-/*
-        Transaction storage transaction = transactions[_txIndex];
-        transaction.numConfirmations += 1;
-        isConfirmed[_txIndex][msg.sender] = true;
-        /*
