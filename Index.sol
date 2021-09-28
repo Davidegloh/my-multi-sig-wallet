@@ -3,8 +3,9 @@ pragma abicoder v2;
 
 
 contract Wallet {
-    // Tableau des owners
+    // Tableau des owners du contrat 
     address[] public owners; 
+    // state variable of the limit of approvals
     uint limit;
 
 // Struct d'une transaction 
@@ -32,7 +33,16 @@ mapping(address => bool) public isOwner;
         require (isOwner[msg.sender] "not owner");
     }
 
+    //Should initialize the owners list and the limit 
+    constructor(address[] memory _owners, uint _limit) {
+        owners = _owners;
+        limit = _limit; 
+        require(_limit > 0 && _limit <= _owners.length,"number of limit of approval is invalid");
+        require(owners.length > 0, "owner required");
 
+    }
 
+    //Empty function
+    function deposit() public payable {}
 
 }
