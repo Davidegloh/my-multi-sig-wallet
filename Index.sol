@@ -62,18 +62,31 @@ mapping(address => bool) public isOwner;
         );
     }
 
-    //Set your approval for one of the transfer requests.
-    function setApproval(uint _id) public onlyOwner {
-        Transfer storage transfer =  transferRequests[_id]; // it allows to update the transaction struct and to assign the value passed input to the storage variable transaction
-        transfer.approvals += 1; 
-        approvals[msg.sender][_id] = true; 
-        emit setApprovals(msg.sender, _id);
-        require();
-    }
-
+    
     //Need to update the mapping to record the approval for the msg.sender.
     //When the amount of approvals for a transfer has reached the limit, this function should send the transfer to the recipient.
-    //An owner should not be able to vote twice.
-    //An owner should not be able to vote on a tranfer request that has already been sent.
+
+    
+    //Set your approval for one of the transfer requests
+    function setApproval(uint _id) public onlyOwner {
+        Transfer storage transfer =  transferRequests[_id]; // it allows to update the transaction struct and to assign the value passed input to the storage variable transaction
+        require(approvals[msg.sender][_id] == false);//An owner should not be able to vote twice.
+        require(transferRequests[_id].hasBeenSent == false);//An owner should not be able to vote on a tranfer request that has already been sent.
+
+        approvals[msg.sender][_id] == true;
+        transferRequests[_id].approvals++;
+
+        if(transferRequests[_id].approvals >=limit){
+            transferRequests[_id].hasBeenSent = true;
+            transferRequests[_id].receiver.tranfer(transferRequests[_id].amount);
+        }
+   
+    }
+
+//Should reutn all transfer requests
+function getTransfertRequests() public view returns(Transfer[]memory){
+    return transferRequests;
+}
+
 
 }
