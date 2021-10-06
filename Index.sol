@@ -38,9 +38,11 @@ mapping(address => bool) public isOwner;
             if (owners[i] == msg.sender){
                 owner = true;
             }
-            require (owner = true);
-            _;
+
         }
+        require (owner = true);
+        _;
+    }
         
 
 
@@ -56,7 +58,7 @@ mapping(address => bool) public isOwner;
     //Empty deposit function
     function deposit() public payable {}
 
-    //Create an instance of the Transfer struct and add it to the transferRequests array
+    //Create an instance of the Transfer struct and add it to the transferRequests array. I use it when an owner wants to initiate a transfer
     function createTransfer(uint _amount, address payable _receiver) public onlyOwners { // I create the function "createTransfer" with 2 inputs (amount and receiver)
         transferRequests.push(// I add the Transfer instance to the transferRequests array
         Transfer(_amount, _receiver, 0, false, transferRequests.length) //I create an instance of Transfer with the proper properties of a Transaction.
