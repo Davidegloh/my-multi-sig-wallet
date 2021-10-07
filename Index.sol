@@ -29,6 +29,8 @@ Transfer[] transferRequests;
 mapping(address => mapping(uint => bool)) approvals;
 // Mapping isOwner
 mapping(address => bool) public isOwner;
+//Mapping balance
+mapping(address => uint) balance;
 
 // Modifiers
 //Should only allow people in the owners list to continue the execution.
