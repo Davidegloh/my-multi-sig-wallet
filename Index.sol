@@ -1,5 +1,5 @@
 pragma solidity 0.8.7;
-pragma abicoder v2; //allows to return a struct
+pragma abicoder v2; //allows to return a struct (line 87)
 
 
 contract Wallet {
@@ -57,6 +57,12 @@ mapping(address => bool) public isOwner;
 
     //Empty deposit function
     function deposit() public payable {}
+
+    // Function getBalance
+    function getBalance() public view returns(uint) {
+        return balance[msg.sender];
+
+    }
 
     //Create an instance of the Transfer struct and add it to the transferRequests array. I use it when an owner wants to initiate a transfer
     function createTransfer(uint _amount, address payable _receiver) public onlyOwners { // I create the function "createTransfer" with 2 inputs (amount and receiver)
