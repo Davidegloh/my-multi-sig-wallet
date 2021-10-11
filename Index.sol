@@ -93,7 +93,7 @@ mapping(address => uint) balance;
         if(transferRequests[_id].approvals >=limit){ // //When the amount of approvals for a transfer has reached the limit, this function should send the transfer to the recipient.
             transferRequests[_id].hasBeenSent = true;
             transferRequests[_id].receiver.transfer(transferRequests[_id].amount);
-            emitTransferApproved(_id);
+            emit TransferApproved(_id);
         }
    
     }
