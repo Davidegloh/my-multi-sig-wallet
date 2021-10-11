@@ -63,7 +63,7 @@ mapping(address => uint) balance;
 
     // Function getBalance
     function getBalance() public view returns(uint) {
-        return balance[msg.sender];
+    return address(this).balance;
 
     }
 
