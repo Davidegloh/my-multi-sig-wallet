@@ -3,16 +3,12 @@ pragma abicoder v2; //allows to return a struct (line 87)
 
 
 contract Wallet {
-    //Events
-    event setApprovals(address indexed owner, uint txIndex);
-
     // Array of owners of the contract
     address[] public owners; 
     // state variable of the limit of approvals
     uint limit;
 
 // Struct of a transaction 
-
     struct Transfer{
         uint id;
         uint amount;
@@ -21,6 +17,11 @@ contract Wallet {
         bool hasBeenSent;
          
     }
+
+//Events
+    event setApprovals(address indexed owner, uint txIndex);
+    event ApprovalReceived(uint _id, uint approvals, address approver);
+    event TransferApproved(uint _id);
 
 // Array of transfer requests
 Transfer[] transferRequests;
@@ -48,7 +49,7 @@ mapping(address => uint) balance;
         
 
 
-    //Should initialize the owners list and the limit 
+    //Should initialize the owners list and the limit. Constructor is used to initialize state variables of a contract.
     constructor(address[] memory _owners, uint _limit) {
         owners = _owners;
         limit = _limit; 
@@ -77,21 +78,23 @@ mapping(address => uint) balance;
     //Need to update the mapping to record the approval for the msg.sender.
     //When the amount of approvals for a transfer has reached the limit, this function should send the transfer to the recipient.
     //Set your approval for one of the transfer requests
+    //An owner should not be able to vote twice.
+    //An owner should not be able to vote on a tranfer request that has already been sent.
     function Approve(uint _id) public onlyOwners {
         require(approvals[msg.sender][_id] == false);//An owner should not be able to vote twice.
         require(transferRequests[_id].hasBeenSent == false);//An owner should not be able to vote on a tranfer request that has already been sent.
 
         approvals[msg.sender][_id] = true;
-        transferRequests[_id].approvals++;
+        transferRequests[_id].approvals++; ////Need to update the mapping to record the approval for the msg.sender.
 
-        if(transferRequests[_id].approvals >=limit){
+        if(transferRequests[_id].approvals >=limit){ // //When the amount of approvals for a transfer has reached the limit, this function should send the transfer to the recipient.
             transferRequests[_id].hasBeenSent = true;
             transferRequests[_id].receiver.transfer(transferRequests[_id].amount);
         }
    
     }
 
-//Should reuturn all transfer requests
+//Should return all transfer requests
 function getTransfertRequests() public view returns(Transfer[]memory){
     return transferRequests;
 }
